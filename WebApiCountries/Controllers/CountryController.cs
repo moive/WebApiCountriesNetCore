@@ -41,5 +41,15 @@ namespace WebApiCountries.Controllers
 
             return BadRequest(ModelState);
         }
+
+        [HttpPut("{id}")]
+        public IActionResult Put([FromBody] Country country, int id)
+        {
+            if (country.Id != id) return BadRequest();
+
+            context.Entry(country).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            context.SaveChanges();
+            return Ok(country);
+        }
     }
 }
