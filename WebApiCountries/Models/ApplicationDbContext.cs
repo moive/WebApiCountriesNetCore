@@ -11,5 +11,6 @@ namespace WebApiCountries.Models
         }
 
         public DbSet<Country> Countries { get; set; }
+        public DbSet<Province> Provinces { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 using WebApiCountries.Models;
 
 namespace WebApiCountries
@@ -9,7 +11,7 @@ namespace WebApiCountries
         {
             var builder = WebApplication.CreateBuilder(args);
             ConfigureServices(builder);
-            var app = builder.Build(); 
+            var app = builder.Build();
             Configure(app);
             return app;
         }
@@ -19,10 +21,17 @@ namespace WebApiCountries
             // Add services to the container.
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("CountryDb"));
 
+            builder.Services.AddMvc().AddJsonOptions(ConfigureJson);
+
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+        }
+
+        private static void ConfigureJson(JsonOptions obj)
+        {
+            obj.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
         }
 
         private static void Configure(WebApplication app)
@@ -48,10 +57,32 @@ namespace WebApiCountries
             {
                 context.Countries.AddRange(new List<Country>()
                 {
-                    new Country(){Name = "Perú"},
+                    new Country(){
+                        Name = "Perú",
+                        Provinces = new List<Province>(){
+                            new Province(){Name = "Tumbes"},
+                            new Province(){Name = "Lima"}
+                        }
+                    },
                     new Country(){Name = "Argentina"},
-                    new Country(){Name = "Uruguay"},
-                    new Country(){Name = "Colombia"},
+                    new Country(){
+                        Name = "Uruguay",
+                        Provinces = new List<Province>()
+                        {
+                            new Province(){Name = "Artigas"},
+                            new Province(){Name = "Paysandú"},
+                            new Province(){Name = "Durazno"},
+                        }
+                    },
+                    new Country(){
+                        Name = "Colombia",
+                        Provinces = new List <Province>()
+                        {
+                            new Province(){Name = "Córdova"},
+                            new Province(){Name = "Bogotá"},
+                            new Province(){Name = "Antioquia"},
+                        }
+                    },
                 });
 
                 context.SaveChanges();
