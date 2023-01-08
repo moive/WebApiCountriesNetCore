@@ -9,7 +9,7 @@ namespace WebApiCountries.Models
         public string Name { get; set; }
         [ForeignKey("Country")]
         public int CountryId { get; set; }
-        [JsonIgnore]
-        public Country Country { get; set; }
+        //[JsonIgnore]
+        //public Country Country { get; set; }
     }
 }

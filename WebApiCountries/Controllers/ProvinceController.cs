@@ -42,7 +42,7 @@ namespace WebApiCountries.Controllers
             context.Provinces.Add(province);
             context.SaveChanges();
 
-            return new CreatedAtRouteResult("provinceById", new { id = province.Id }, province);
+            return new ObjectResult(province);
         }
 
 
